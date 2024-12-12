@@ -9,7 +9,7 @@ import { CsrfToken, CsrfTokenType } from "../classes/CsrfToken";
 import jwt from "jsonwebtoken";
 
 // importation of notifications messages
-import { notificationMessages } from "../datas/notifications";
+import { notificationMessages } from "../config/notifications-config";
 import { getJsonResponse } from "../functions/notifications";
 
 // Express importation

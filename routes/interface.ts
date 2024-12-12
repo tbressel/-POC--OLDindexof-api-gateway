@@ -33,8 +33,8 @@ import validator from 'validator';
 
 api.get('/interface/:pageName', async (req: Request, res: any, next: NextFunction) => {
   let { pageName } = req.params;
-  console.log(color.bgCyan, 'ROUTE -> interface');
-  console.log(color.cyan + color.white + color.red, 'GATEWAY ->', ' Valeur de pageName : ', pageName);
+  console.log(color.green, 'ROUTE -> interface');
+  console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de pageName : ', pageName);
 
   // Cleaning the data to prevent XSS attacks
   pageName = validator.escape(pageName);

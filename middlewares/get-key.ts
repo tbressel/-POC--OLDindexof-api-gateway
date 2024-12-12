@@ -5,7 +5,7 @@
 import { Express, Request, Response, NextFunction } from "express";
 
 // importation of notifications messages
-import { notificationMessages } from "../datas/notifications";
+import { notificationMessages } from "../config/notifications-config";
 import { getJsonResponse } from "../functions/notifications";
 
 import { QueryUser } from "../queries/UserQuery";

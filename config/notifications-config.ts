@@ -9,12 +9,12 @@ import { NotificationMessages } from '../models/notification.models';
 //////////////////////////////////////////////////
 
 export const notificationMessages: NotificationMessages = {
-    "connexion-failure": "An error occured while trying to connect to the database",
-    "max-connection-reached": "The maximum of connection allowed is reached",
-    "query-failure": "An error occured while trying to execute the query",
-    "no-spotlight-media": "No spotlight media found",
-    "no-card-items": "No card items found",
-    "no-menu-items": "No menu items found",
-    "no-broadcasts": "No broadcasts found",
+    "no-page-name": "The page name is not defined",
+    "parameter-missing": "A parameter is missing",
+    "fetch-fail": "Error fetching page data",
+    "missing-email": "The request misses the email",
+    "email_bad_format" : "Attention, l'adresse mail n'est pas au bon format",
+    "fail": "The email does not exist",
+    'fail2': "The email already exists",
+    
 }
-

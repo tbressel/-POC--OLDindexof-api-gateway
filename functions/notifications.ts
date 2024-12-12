@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////
 //////////////     TYPE DEFINITION   /////////////
 //////////////////////////////////////////////////
-import { NotificationMessages } from '../datas/notifications';
+import { NotificationMessages } from '../models/notification.models';
 
 
 interface JsonResponse {

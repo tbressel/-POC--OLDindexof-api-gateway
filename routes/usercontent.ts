@@ -21,6 +21,8 @@ api.use(jsonParserMiddleware);
 // Validator library importation to check and clean datas from request
 import validator from 'validator';
 
+
+
 ////////////////////////////////////////
 ////////   DEFINITION USES   ///////////
 ////////////////////////////////////////
@@ -30,8 +32,8 @@ import validator from 'validator';
  */
 api.get('/content/:pageName/', async (req: Request, res: Response, next: NextFunction) => {
   let { pageName, id } = req.params as { pageName: string, id: string };
-  console.log('\x1b[33m%s\x1b[0m', 'ROUTE -> usercontent');
-  console.log('\x1b[36m%s\x1b[0m', 'GATEWAY -> Valeur de pageName : ', pageName);
+  console.log(color.green, 'ROUTE -> usercontent');
+  console.log(color.bgGreen, 'GATEWAY -> Valeur de pageName : ', pageName);
 
  // Cleaning the data to prevent XSS attacks
  pageName = validator.escape(pageName);
@@ -61,12 +63,10 @@ api.get('/content/:pageName/', async (req: Request, res: Response, next: NextFun
  */
 api.get('/content/:pageName/:id', async (req: Request, res: Response, next: NextFunction) => {
   let { pageName, id } = req.params as { pageName: string, id: string };
-  // console.log('\x1b[33m%s\x1b[0m', 'ROUTE -> usercontent');
-  // console.log('\x1b[36m%s\x1b[0m', 'GATEWAY -> Valeur de pageName : ', pageName);
-  // console.log('\x1b[32m%s\x1b[0m', 'GATEWAY -> Valeur de id : ', id);
-  console.log('ROUTE -> usercontent');
-  console.log('GATEWAY -> Valeur de pageName : ', pageName);
-  console.log('GATEWAY -> Valeur de id : ', id);
+
+  console.log(color.green, 'ROUTE -> usercontent');
+  console.log(color.bgGreen, 'GATEWAY -> Valeur de pageName : ', pageName);
+  console.log(color.bgGreen, 'GATEWAY -> Valeur de id : ', id);
 
  // Cleaning the data to prevent XSS attacks
  pageName = validator.escape(pageName);

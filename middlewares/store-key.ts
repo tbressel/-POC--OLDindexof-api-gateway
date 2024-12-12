@@ -8,8 +8,6 @@ import RedisConfig from "../classes/RedisConfig";
 import { RedisConfigModel } from "../models/database.models";
 
 // importation of notifications messages
-import { notificationMessages } from "../datas/notifications";
-import { getJsonResponse } from "../functions/notifications";
 
 
 ////////////////////////////////////////

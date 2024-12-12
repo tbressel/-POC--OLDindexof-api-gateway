@@ -1,42 +1,52 @@
-
-
-
 /////////////////////////////////////
 ////////   IMPORTATIONS   ///////////
 /////////////////////////////////////
+
 // Express importation
-import express, { Express, Request, Response, NextFunction } from "express";
+import express, { Express, Request, Response } from "express";
 
 // ConfigServer importation
 import { authToken } from "../middlewares/token"; // Middleware to check token
 import { getKey } from "../middlewares/get-key"; // Middleware to get the API key (and id_user)
 import { storeKey } from "../middlewares/store-key"; // Middleware to store the API key into cache (and id_user)
 
+import { Uri, color } from '../config'; // import config
 
-////////////////////////////////////////
-////////   DEFINITION USES   ///////////
-////////////////////////////////////////
+
+import validator from 'validator';
+
+import { getJsonResponse } from "../functions/notifications";
+import { notificationMessages } from "../config/notifications-config";
+import { contactApi } from "../functions/api";
+
 
 // express definition
 const api: Express = express();
 
-/**
- * Route to get all users from database users
- */
+
+
+// Jsonwebtoken to generate a token
+const jwt = require('jsonwebtoken');
+
+
+
+////////////////////////////////////////
+////////   DEFINITION USES   ///////////
+////////////////////////////////////////
 api.get("/user", authToken, getKey, storeKey, async (req: Request, res: any) => {
-  
+
   // Get the token from the request headers
   const token: string | undefined = req.headers["authorization"]?.split(" ")[1];
 
-   // Test if the token is missing or null of undefined
-   if (!token || token === undefined || token === null || token === 'null') {
+  // Test if the token is missing or null of undefined
+  if (!token || token === undefined || token === null || token === 'null') {
     res.status(500).json({ message: 'Erreur il manque le token' });
     return;
-}
+  }
 
   try {
     // Call the user microservice to get all users
-    const response = await fetch("http://localhost:5002/user/v1/get-users", {
+    const response = await fetch(`${Uri.apiContent}/user/v1/get-users`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`
@@ -56,7 +66,8 @@ api.get("/user", authToken, getKey, storeKey, async (req: Request, res: any) => 
     // Send the response to the client
     res.status(200).json({
       message: 'Mes data reçues de la réponse',
-      data: data});
+      data: data
+    });
 
   } catch (error: any) {
     console.error("Error in /user route:", error);
@@ -67,6 +78,61 @@ api.get("/user", authToken, getKey, storeKey, async (req: Request, res: any) => 
     });
   }
 });
+
+
+///////////////////////////////////////////////////////////////////////////
+////////   CHECK IF AN EMAIL EXISTS DEPENDING ON THE STEP SLUG  ///////////
+///////////////////////////////////////////////////////////////////////////
+api.get("/user/:step", async (req: Request, res: Response) => {
+
+  // Get the step slug from the request headers and clean it to prevent XSS attacks
+  let { step } = req.params;
+  step = validator.escape(step);
+  console.log(color.green, 'ROUTE -> user');
+  console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de step : ', step);
+
+
+
+  // Check if the step is defined
+  if (!step) {
+    getJsonResponse(res, 400, "no-page-name", notificationMessages, false);
+    return;
+  }
+
+
+
+  /**
+   * -------------- EMAIL SECTION --------------
+   */
+
+  // Check if the step has the value 'email'. Then store it.
+  if (step === 'email') {
+    const email: string = req.headers["email"] as string;
+    console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de email : ', email);
+    await contactApi('user/v1/email/check', res, 'post', Uri.apiUser, email);
+  }
+
+
+
+  /**
+   * -------------- AUTH SECTION --------------
+  */
+
+  // Check if the step has the value 'email'. Then store it.
+  if (step === 'auth') {
+
+    let email: string = req.headers["email"] as string;
+    let passwordClient: string = req.headers["password"] as string;
+
+    console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de email : ', email);
+    console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de password : ', passwordClient);
+
+    await contactApi('user/v1/login', res, 'post', Uri.apiUser, email, passwordClient);
+  }
+});
+
+
+
 
 
 export default api;

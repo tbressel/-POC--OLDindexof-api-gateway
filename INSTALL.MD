@@ -22,6 +22,10 @@ pnpm install typescript --save-dev
 pnpm install axios --save && pnpm install @types/axios --save-dev
 pnpm install jest --save-dev jest @types/jest ts-jest
 pnpm install --save-dev jest supertest @types/jest @types/supertest
+
+pnpm install express-session --save && pnpm i --save-dev @types/express-session
+pnpm add express-rate-limit express-slow-down
+pnpm add -D @types/express-rate-limit @types/express-slow-down
 npx gitignore node
 
 

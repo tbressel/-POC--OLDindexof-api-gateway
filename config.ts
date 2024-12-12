@@ -1,7 +1,8 @@
 
 export const Uri = {
     apiInterface: 'http://localhost:5006/',
-    apiContent: 'http://localhost:5002/'
+    apiContent: 'http://localhost:5002/',
+    apiUser: 'http://localhost:5004/'
 }
 
 const red: string = '\x1b[31m%s\x1b[0m';
