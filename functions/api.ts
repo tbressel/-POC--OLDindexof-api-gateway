@@ -13,15 +13,16 @@ import { Response } from "express";
  * @param password 
  * @returns 
  */
-export async function contactApi(route: string, res: Response, method: string, uri: string, email?: string, password?: string) {
+export async function contactApi(route: string, res: Response, method: string, uri: string, email?: string, password?: string, username?: string) {
 
   method.toUpperCase();
   method = method || 'POST' || 'GET' || 'undefined';
   email = email || '';
   password = password || '';
-  const header = headerBuilder(password, email);
+  username = username || '';
+  const header = headerBuilder(password, email, username);
 
-
+console.log('Dans le contactApi : header = ', header);
 
 
   try {
@@ -62,17 +63,42 @@ export async function contactApi(route: string, res: Response, method: string, u
  * @param email 
  * @returns 
  */
-function headerBuilder(password?: string, email?: string): { [key: string]: string } {
-  if (!password || password === 'undefined' || password === null) {
+function headerBuilder(password?: string, email?: string, username?:string): { [key: string]: string } {
+
+console.log('Dans le builder : password = ', password);
+console.log('Dans le builder : email = ', email);
+console.log('Dans le builder : username = ', username);
+
+
+
+
+  if ((
+    !password || password === 'undefined' || password === null) && (!username || username === 'undefined' || username === null)) {
     return {
       "Content-Type": "application/json",
       "email": email || ''
-    };
-  } else {
+    }
+
+  } else if (!username || username === 'undefined' || username === null){
     return {
       "Content-Type": "application/json",
       "email": email || '',
-      "password": password
+      "password": password || ''
+    };
+  } else if ((!password || password === 'undefined' || password === null || password === "") && (!email || email === 'undefined' || email === null || email === "")) {
+    return {
+      "Content-Type": "application/json",
+      "username": username || ''
+    };
+  } else if ((!password || password === 'undefined' || password === null || password === "")) {
+    return {
+      "Content-Type": "application/json",
+      "email": email || '',
+      "username": username || ''
+    };
+  } else {
+    return {
+      "Content-Type": "application/json"
     };
   }
 }

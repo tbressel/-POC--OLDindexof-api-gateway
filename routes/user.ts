@@ -115,6 +115,40 @@ api.get("/user/:step", async (req: Request, res: Response) => {
 
 
   /**
+   * -------------- NAME SECTION --------------
+   */
+
+  // Check if the step has the value 'email'. Then store it.
+  if (step === 'name') {
+    const username: string = req.headers["username"] as string;
+
+    console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de username : ', username);
+    await contactApi('user/v1/username/check', res, 'post', Uri.apiUser, "", "", username);
+  }
+
+
+
+
+
+  /**
+   * -------------- CREATE SECTION --------------
+   */
+
+  // Check if the step has the value 'email'. Then store it.
+  if (step === 'create') {
+
+    const username: string = req.headers["username"] as string;
+    let email: string = req.headers["email"] as string;
+
+
+    console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de username : ', username);
+    console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de email : ', email);
+    await contactApi('user/v1/signin', res, 'post', Uri.apiUser, email, "", username);
+  }
+
+
+
+  /**
    * -------------- AUTH SECTION --------------
   */
 
@@ -124,8 +158,10 @@ api.get("/user/:step", async (req: Request, res: Response) => {
     let email: string = req.headers["email"] as string;
     let passwordClient: string = req.headers["password"] as string;
 
+
     console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de email : ', email);
     console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de password : ', passwordClient);
+
 
     await contactApi('user/v1/login', res, 'post', Uri.apiUser, email, passwordClient);
   }
