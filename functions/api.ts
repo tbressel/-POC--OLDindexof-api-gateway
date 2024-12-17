@@ -1,6 +1,8 @@
 import { notificationMessages } from "../config/notifications-config";
 import { getJsonResponse } from "../functions/notifications";
 import { Response } from "express";
+import { Uri, color } from '../config'; // import config
+
 
 /**
  * 
@@ -11,18 +13,24 @@ import { Response } from "express";
  * @param uri 
  * @param email 
  * @param password 
+ * @param username
+ * @param authorization
  * @returns 
  */
-export async function contactApi(route: string, res: Response, method: string, uri: string, email?: string, password?: string, username?: string) {
+export async function contactApi(route: string, res: Response, method: string, uri: string, email?: string, password?: string, username?: string, authorization?: string): Promise<void> {
 
+
+  // Format datas to be sure to have the right format
   method.toUpperCase();
   method = method || 'POST' || 'GET' || 'undefined';
   email = email || '';
   password = password || '';
   username = username || '';
-  const header = headerBuilder(password, email, username);
+  authorization = authorization || '';
 
-console.log('Dans le contactApi : header = ', header);
+  // Build the header
+  const header = headerBuilder(password, email, username, authorization);
+  console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Fabrication du HEADER : ', header);
 
 
   try {
@@ -42,6 +50,8 @@ console.log('Dans le contactApi : header = ', header);
 
     } else {
       const data: Response = await response.json();
+      console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Récupération des DATA de USER : ', data);
+
       // Send the response to the client
       res.status(200).json({ data: data });
     }
@@ -63,11 +73,12 @@ console.log('Dans le contactApi : header = ', header);
  * @param email 
  * @returns 
  */
-function headerBuilder(password?: string, email?: string, username?:string): { [key: string]: string } {
+function headerBuilder(password?: string, email?: string, username?: string, authorization?: string): { [key: string]: string } {
 
-console.log('Dans le builder : password = ', password);
-console.log('Dans le builder : email = ', email);
-console.log('Dans le builder : username = ', username);
+  console.log('Dans le builder : password = ', password);
+  console.log('Dans le builder : email = ', email);
+  console.log('Dans le builder : username = ', username);
+  console.log('Dans le builder : authorization = ', authorization);
 
 
 
@@ -76,29 +87,34 @@ console.log('Dans le builder : username = ', username);
     !password || password === 'undefined' || password === null) && (!username || username === 'undefined' || username === null)) {
     return {
       "Content-Type": "application/json",
-      "email": email || ''
+      "email": email || '',
+      "authorization": authorization || ''
     }
 
-  } else if (!username || username === 'undefined' || username === null){
+  } else if (!username || username === 'undefined' || username === null) {
     return {
       "Content-Type": "application/json",
       "email": email || '',
-      "password": password || ''
+      "password": password || '',
+      "authorization": authorization || ''
     };
   } else if ((!password || password === 'undefined' || password === null || password === "") && (!email || email === 'undefined' || email === null || email === "")) {
     return {
       "Content-Type": "application/json",
-      "username": username || ''
+      "username": username || '',
+      "authorization": authorization || ''
     };
   } else if ((!password || password === 'undefined' || password === null || password === "")) {
     return {
       "Content-Type": "application/json",
       "email": email || '',
-      "username": username || ''
+      "username": username || '',
+      "authorization": authorization || ''
     };
   } else {
     return {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "authorization": authorization || ''
     };
   }
 }

@@ -165,6 +165,22 @@ api.get("/user/:step", async (req: Request, res: Response) => {
 
     await contactApi('user/v1/login', res, 'post', Uri.apiUser, email, passwordClient);
   }
+
+
+  /**
+   * -------------- SESSION SECTION --------------
+  */
+
+  // Check if the step has the value 'email'. Then store it.
+  if (step === 'session') {
+    console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de SESSION : ', req.headers);
+
+    let authorization: string = req.headers["authorization"] as string;
+    console.log(color.bgGreen + color.white + color.red, 'GATEWAY ->', ' Valeur de authorization : ', authorization);
+
+    await contactApi('user/v1/token', res, 'post', Uri.apiUser, "", "", "", authorization);
+
+  }
 });
 
 
