@@ -6,7 +6,7 @@
 import express from "express";
 
 // Controller importation
-import UserController from "../controllers/user.controller"
+import UserController from "../controllers/UserController"
 import UserService from "../core/services/UserService";
 
 // middlewares import
@@ -27,8 +27,13 @@ router.use(BodyParserMiddleware.urlEncodedParser);
 router.use(BodyParserMiddleware.jsonParser);
 
 
-
-
 router.post("/user/email", (req, res) => userController.checkEmail(req, res));
+router.post("/user/username", (req, res) => userController.isUsernameExists(req, res));
+
+// action : login, create
+router.post("/user/session", (req, res) => userController.session(req, res));
+
+// action : check
+router.get("/user/session", (req, res) => userController.session(req, res));
 
 export default router;

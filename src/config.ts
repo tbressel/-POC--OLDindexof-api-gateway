@@ -3,8 +3,9 @@
  * @description: It contains main URI for APIs routes.
  */
 export const Uri = {
-    apiContent: 'http://localhost:5001/',
-    apiUser: 'http://localhost:5004/'
+    apiContent: 'http://localhost:5002/',
+    apiUser: 'http://localhost:5004/',
+    apiInterface: 'http://localhost:5006/',
 }
 
 

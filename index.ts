@@ -20,7 +20,7 @@ import ServerModule from './src/modules/ServerModule';
 // interface app components routes
 // import contentRoutes from './routes/content.route';
 import userRoutes from './src/routes/user.route';
-// import interfaceRoutes from './routes/interface.route';
+import interfaceRoutes from './src/routes/interface.route';
 
 // Middleware importation
 import CorsMiddleware from "./src/middlewares/CorsMiddleware";
@@ -78,5 +78,5 @@ server.use('/public/uploads/avatars', express.static(path.join(__dirname, 'uploa
 
 
 server.use('', userRoutes);
+server.use('', interfaceRoutes);
 // server.use('', contentRoutes);
-// server.use('', interfaceRoutes);
